@@ -1,0 +1,25 @@
+# Site settings
+title: ZBT Link
+email: 
+description: >-
+  ZBT Link official site.
+baseurl: ""
+url: "https://zbtlink.github.io"
+github_username: zbtlink
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .sass-cache/
+  - .jekyll-cache/
