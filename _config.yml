@@ -4,7 +4,7 @@ email:
 description: >-
   ZBT Link official site.
 baseurl: ""
-url: "https://zbtlink.github.io"
+url: "https://open.zbtlink.com"
 github_username: zbtlink
 
 # Build settings
