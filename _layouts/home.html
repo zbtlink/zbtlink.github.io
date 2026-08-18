@@ -1,0 +1,60 @@
+---
+layout: default
+---
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="eyebrow">ZBT Open Firmware</p>
+    <h1>为路由器提供可追溯的开源固件</h1>
+    <p class="lede">按机型查找固件，查看发布说明与历史版本。固件文件存放在 OSS，本站只发布页面与校验信息。</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ '/firmware/' | relative_url }}">浏览机型</a>
+      <a class="btn btn-ghost" href="{{ '/blog/' | relative_url }}">阅读更新</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>支持的机型</h2>
+      <a href="{{ '/firmware/' | relative_url }}">查看全部</a>
+    </div>
+    <div class="card-grid">
+      {% for device in site.data.catalog.devices %}
+      <a class="device-card" href="{{ '/devices/' | append: device.id | append: '/' | relative_url }}">
+        <div class="card-kicker">
+          <span class="status status-{{ device.status }}">{{ device.status }}</span>
+          <span>{{ device.chipset }}</span>
+        </div>
+        <h3>{{ device.name }}</h3>
+        <p>{{ device.summary }}</p>
+        <ul class="spec-row">
+          <li>{{ device.cpu }}</li>
+          <li>{{ device.ram }} RAM</li>
+          <li>{{ device.wifi }}</li>
+        </ul>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <h2>最新文章</h2>
+      <a href="{{ '/blog/' | relative_url }}">全部文章</a>
+    </div>
+    <div class="post-list">
+      {% for post in site.posts limit: 4 %}
+      <article class="post-row">
+        <time>{{ post.date | date: '%Y-%m-%d' }}</time>
+        <div>
+          <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+          <p>{{ post.excerpt | strip_html | truncate: 120 }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

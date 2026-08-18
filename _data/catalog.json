@@ -1,0 +1,32 @@
+{
+  "devices": [
+    {
+      "id": "we1326",
+      "name": "WE1326",
+      "chipset": "MT7621A",
+      "cpu": "双核 880MHz",
+      "ram": "256MB",
+      "flash": "16MB",
+      "wifi": "2.4G / 5G",
+      "ports": "5 × 千兆",
+      "status": "supported",
+      "summary": "企业级双频千兆无线路由器，适合中小办公室与家庭高带宽场景。",
+      "flash_notes": "请先备份原厂固件。刷入 factory 镜像用于从原厂系统迁移，已在 OpenWrt 上运行请使用 sysupgrade，并取消保留配置。",
+      "releases": []
+    },
+    {
+      "id": "wg3526",
+      "name": "WG3526",
+      "chipset": "MT7621AT",
+      "cpu": "双核 880MHz",
+      "ram": "512MB",
+      "flash": "16MB",
+      "wifi": "2.4G / 5G",
+      "ports": "5 × 千兆",
+      "status": "supported",
+      "summary": "高内存版本，适合旁路网关、多拨与轻量虚拟化场景。",
+      "flash_notes": "升级前确认分区布局与当前版本一致。如从非官方固件迁移，建议不保留配置。",
+      "releases": []
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>ZBT 固件后台</title>
+  <link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="logo">ZBT Admin</div>
+      <nav>
+        <button data-view="dash" class="is-active">概览</button>
+        <button data-view="devices">机型</button>
+        <button data-view="release">发布固件</button>
+        <button data-view="posts">文章</button>
+        <button data-view="settings">设置</button>
+      </nav>
+      <p class="aside-note">密钥只存在本机浏览器，不会写入 GitHub。</p>
+    </aside>
+    <main>
+      <header class="top">
+        <h1 id="view-title">概览</h1>
+        <div id="status"></div>
+      </header>
+
+      <section id="view-dash" class="view"></section>
+      <section id="view-devices" class="view hidden"></section>
+      <section id="view-release" class="view hidden"></section>
+      <section id="view-posts" class="view hidden"></section>
+      <section id="view-settings" class="view hidden"></section>
+    </main>
+  </div>
+  <script src="https://gosspublic.alicdn.com/aliyun-oss-sdk-6.18.1.min.js"></script>
+  <script src="./admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+---
+layout: default
+---
+<article class="container prose post-page">
+  <p class="crumb"><a href="{{ '/blog/' | relative_url }}">文章</a></p>
+  <header>
+    <time>{{ page.date | date: '%Y-%m-%d' }}</time>
+    <h1>{{ page.title }}</h1>
+  </header>
+  {{ content }}
+</article>

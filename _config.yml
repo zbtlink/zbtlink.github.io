@@ -1,25 +1,46 @@
-# Site settings
 title: ZBT Link
-email: 
-description: >-
-  ZBT Link official site.
-baseurl: ""
+description: ZBT 开源固件发布平台
 url: "https://open.zbtlink.com"
+baseurl: ""
+lang: zh-CN
+timezone: Asia/Shanghai
 github_username: zbtlink
 
-# Build settings
-theme: minima
+markdown: kramdown
+kramdown:
+  input: GFM
+permalink: pretty
+
+collections:
+  devices:
+    output: true
+    permalink: /devices/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "devices"
+    values:
+      layout: device
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+  - scope:
+      path: ""
+    values:
+      layout: default
+
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
 
-# Exclude from processing
 exclude:
   - Gemfile
   - Gemfile.lock
+  - vendor
   - node_modules
-  - vendor/bundle/
-  - vendor/cache/
-  - vendor/gems/
-  - vendor/ruby/
-  - .sass-cache/
-  - .jekyll-cache/
+  - README.md
+  - .sass-cache
+  - .jekyll-cache

@@ -1,0 +1,14 @@
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <span class="brand-mark">ZBT</span>
+      <span class="brand-text">Open Firmware</span>
+    </a>
+    <nav class="nav-links">
+      <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="is-active"{% endif %}>首页</a>
+      <a href="{{ '/firmware/' | relative_url }}" {% if page.url contains '/firmware' or page.url contains '/devices' %}class="is-active"{% endif %}>固件</a>
+      <a href="{{ '/blog/' | relative_url }}" {% if page.url contains '/blog' or page.layout == 'post' %}class="is-active"{% endif %}>文章</a>
+      <a href="{{ '/about/' | relative_url }}" {% if page.url contains '/about' %}class="is-active"{% endif %}>关于</a>
+    </nav>
+  </div>
+</header>

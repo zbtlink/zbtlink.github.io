@@ -1,0 +1,86 @@
+:root {
+  --bg: #101418;
+  --panel: #171d22;
+  --line: #2b353c;
+  --text: #e8eef1;
+  --muted: #8b9aa3;
+  --accent: #ce6b39;
+  --ok: #3caf7a;
+  --danger: #d15b4a;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: "Segoe UI", "PingFang SC", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.hidden { display: none !important; }
+.shell { display: grid; grid-template-columns: 220px 1fr; min-height: 100%; }
+aside {
+  border-right: 1px solid var(--line);
+  padding: 20px 14px;
+  background: #0d1114;
+}
+.logo { font-weight: 800; margin: 4px 8px 20px; }
+aside nav { display: grid; gap: 6px; }
+aside button, .btn {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+  padding: 9px 12px;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+aside button.is-active, .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.aside-note { color: var(--muted); font-size: 12px; padding: 16px 8px; line-height: 1.5; }
+main { padding: 22px 28px 48px; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+h1 { font-size: 1.4rem; margin: 0 0 18px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.stat, .card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 16px;
+}
+.muted { color: var(--muted); }
+label { display: grid; gap: 6px; margin: 10px 0; font-size: 13px; color: var(--muted); }
+input, textarea, select {
+  width: 100%;
+  background: #10151a;
+  color: var(--text);
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+  font: inherit;
+}
+textarea { min-height: 120px; resize: vertical; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.list { display: grid; gap: 8px; }
+.item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  background: var(--panel);
+}
+#status { color: var(--muted); font-size: 13px; }
+.ok { color: var(--ok); }
+.err { color: var(--danger); }
+.hint {
+  background: #1b2329;
+  border: 1px dashed var(--line);
+  padding: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.progress { height: 8px; background: #0d1114; border: 1px solid var(--line); margin-top: 8px; }
+.progress > span { display: block; height: 100%; background: var(--ok); width: 0; }
+.files { display: grid; gap: 8px; }
+@media (max-width: 800px) {
+  .shell { grid-template-columns: 1fr; }
+}
