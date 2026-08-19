@@ -146,11 +146,44 @@
     }).join("");
   }
 
+  function ossSafeSegment(s, fallback) {
+    var t = String(s || "").trim().replace(/\\/g, "/").split("/").pop();
+    t = t.replace(/[^\w.+-]+/g, "-").replace(/^[-.]+|[-.]+$/g, "");
+    return t || fallback || "file";
+  }
+
+  function ossFileName(name) {
+    var base = String(name || "firmware.bin").replace(/\\/g, "/").split("/").pop();
+    var dot = base.lastIndexOf(".");
+    var stem = dot >= 0 ? base.slice(0, dot) : base;
+    var ext = dot >= 0 ? base.slice(dot) : "";
+    ext = ext.replace(/[^\w.]+/g, "");
+    return ossSafeSegment(stem, "firmware") + (ext || ".bin");
+  }
+
+  function versionKey(version) {
+    var s = String(version || "").trim();
+    if (!/^[\w.+-]+$/.test(s)) {
+      throw new Error("版本号只能用英文、数字、点、下划线和短横线，例如 26.08.06。中文说明请写在「发布说明」里。");
+    }
+    return s;
+  }
+
   function ossUrl(key) {
     var s = settings();
-    if (s.cdnBase) return s.cdnBase.replace(/\/$/, "") + "/" + key;
+    var encoded = key.split("/").map(encodeURIComponent).join("/");
+    if (s.cdnBase) return s.cdnBase.replace(/\/$/, "") + "/" + encoded;
     var region = s.ossRegion || "oss-cn-hangzhou";
-    return "https://" + s.ossBucket + "." + region + ".aliyuncs.com/" + key;
+    return "https://" + s.ossBucket + "." + region + ".aliyuncs.com/" + encoded;
+  }
+
+  function corsHint(err) {
+    var msg = (err && err.message) ? err.message : String(err || "");
+    if (/XHR error|connected: false|Failed to fetch|NetworkError|ERR_FAILED/i.test(msg)) {
+      return "OSS 跨域被浏览器拦截（当前页面来源：" + location.origin +
+        "）。请到 Bucket「权限管理 → 跨域设置」添加该来源，方法勾选 GET/POST/PUT/HEAD，允许 Headers 填 *，暴露 Headers 填 ETag。不要用来源 *。";
+    }
+    return msg;
   }
 
   async function uploadToOss(key, file, onProgress) {
@@ -159,16 +192,28 @@
     if (!s.ossRegion || !s.ossBucket || !s.ossKey || !s.ossSecret) {
       throw new Error("请先填写 OSS 参数");
     }
+    var region = s.ossRegion.replace(/^https?:\/\//, "").replace(/\.aliyuncs\.com$/, "");
     var client = new OSS({
-      region: s.ossRegion,
+      region: region,
       accessKeyId: s.ossKey,
       accessKeySecret: s.ossSecret,
       bucket: s.ossBucket,
-      secure: true
+      secure: true,
+      timeout: 120000
     });
-    await client.multipartUpload(key, file, {
-      progress: function (p) { if (onProgress) onProgress(p); }
-    });
+    try {
+      if (onProgress) onProgress(0.05);
+      if (file.size >= 80 * 1024 * 1024) {
+        await client.multipartUpload(key, file, {
+          progress: function (p) { if (onProgress) onProgress(p); }
+        });
+      } else {
+        await client.put(key, file);
+        if (onProgress) onProgress(1);
+      }
+    } catch (err) {
+      throw new Error(corsHint(err));
+    }
     return ossUrl(key);
   }
 
@@ -314,12 +359,12 @@
     $("view-release").innerHTML =
       '<div class="card">' +
       '<label>机型<select id="r-device">' + opts + "</select></label>" +
-      '<label>版本号<input id="r-version" placeholder="1.2.0"></label>' +
+      '<label>版本号<input id="r-version" placeholder="26.08.06"></label>' +
       '<label>通道<select id="r-channel"><option value="stable">stable</option><option value="beta">beta</option><option value="snapshot">snapshot</option></select></label>' +
       '<label>日期<input id="r-date" type="date" value="' + today() + '"></label>' +
       '<label>发布说明<textarea id="r-notes" placeholder="修复内容、注意事项"></textarea></label>' +
       '<label>固件文件（可多选）<input id="r-files" type="file" multiple></label>' +
-      '<div class="muted">文件将上传到 OSS：firmware/机型/版本/文件名</div>' +
+      '<div class="muted">OSS 路径：firmware/机型/版本/文件名。版本号请用 26.08.06 这种英文数字，中文写在发布说明。</div>' +
       '<div class="progress"><span id="r-bar"></span></div>' +
       '<div class="row"><button class="btn btn-primary" id="r-publish">上传并发布</button></div></div>' +
       '<div id="r-history"></div>';
@@ -345,10 +390,9 @@
   async function publishRelease() {
     try {
       var id = $("r-device").value;
-      var version = $("r-version").value.trim();
+      var version = versionKey($("r-version").value.trim());
       var device = state.catalog.devices.find(function (d) { return d.id === id; });
       if (!device) throw new Error("请选择机型");
-      if (!version) throw new Error("请填写版本号");
       var files = $("r-files").files;
       if (!files.length) throw new Error("请选择至少一个固件文件");
       var uploaded = [];
@@ -356,7 +400,7 @@
         var file = files[i];
         setStatus("计算校验并上传 " + file.name + " (" + (i + 1) + "/" + files.length + ")…");
         var sum = await sha256(file);
-        var key = "firmware/" + id + "/" + version + "/" + file.name;
+        var key = "firmware/" + ossSafeSegment(id, "device") + "/" + version + "/" + ossFileName(file.name);
         var url = await uploadToOss(key, file, function (p) {
           $("r-bar").style.width = Math.round(p * 100) + "%";
         });
@@ -512,7 +556,7 @@
       '<button class="btn" id="reload-data">重新拉取仓库数据</button></div></div>' +
       '<div class="hint" style="margin-top:16px">' +
       "<p><strong>GitHub Token：</strong> GitHub → Settings → Developer settings → Personal access tokens，勾选 repo。</p>" +
-      "<p><strong>OSS CORS：</strong> 在 Bucket 中允许来源 https://open.zbtlink.com 和 http://localhost:4000，方法 PUT/POST/GET/HEAD，Headers *。</p>" +
+      "<p><strong>OSS CORS：</strong> Bucket → 权限管理 → 跨域设置。来源填当前地址栏的 origin（例如 <code>https://open.zbtlink.com</code>，不要用 *），方法勾选 GET/PUT/POST/HEAD，允许 Headers 填 <code>*</code>，暴露 Headers 填 <code>ETag</code>。</p>" +
       "<p>建议使用仅有 firmware/ 前缀写权限的 RAM 子账号。不要把密钥提交进仓库。</p>" +
       "</div>";
     $("save-settings").onclick = function () {
