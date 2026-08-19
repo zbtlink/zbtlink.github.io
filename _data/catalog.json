@@ -13,6 +13,48 @@
       "summary": "",
       "flash_notes": "",
       "releases": []
+    },
+    {
+      "id": "z8102ax-2sim",
+      "name": "Z8102AX-2SIM",
+      "chipset": "",
+      "cpu": "",
+      "ram": "",
+      "flash": "",
+      "wifi": "",
+      "ports": "",
+      "status": "supported",
+      "summary": "",
+      "flash_notes": "",
+      "releases": []
+    },
+    {
+      "id": "z8103ax",
+      "name": "Z8103AX",
+      "chipset": "",
+      "cpu": "",
+      "ram": "",
+      "flash": "",
+      "wifi": "",
+      "ports": "",
+      "status": "supported",
+      "summary": "",
+      "flash_notes": "",
+      "releases": []
+    },
+    {
+      "id": "z8105ax",
+      "name": "Z8105AX",
+      "chipset": "",
+      "cpu": "",
+      "ram": "",
+      "flash": "",
+      "wifi": "",
+      "ports": "",
+      "status": "supported",
+      "summary": "",
+      "flash_notes": "",
+      "releases": []
     }
   ]
 }
