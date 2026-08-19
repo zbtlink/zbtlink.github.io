@@ -132,7 +132,23 @@
       "status": "supported",
       "summary": "",
       "flash_notes": "",
-      "releases": []
+      "releases": [
+        {
+          "version": "26.08.06",
+          "date": "2026-08-19",
+          "channel": "stable",
+          "notes": "",
+          "files": [
+            {
+              "type": "firmware",
+              "name": "Z8106AX_V26.08.06.bin",
+              "url": "https://for-zbtlink-opensource-firmware.oss-cn-shanghai.aliyuncs.com/firmware/z8106ax-2sim/26.08.06/Z8106AX_V26.08.06.bin",
+              "sha256": "cba0fc046fa6e0e8c226f663f9f5efe18106b4710e438e7b73da6bdb554f1122",
+              "size": "25.30 MB"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "z8106ax",
