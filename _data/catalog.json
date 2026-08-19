@@ -55,6 +55,20 @@
       "summary": "",
       "flash_notes": "",
       "releases": []
+    },
+    {
+      "id": "z8106ax-2sim",
+      "name": "Z8106AX-2SIM",
+      "chipset": "",
+      "cpu": "",
+      "ram": "",
+      "flash": "",
+      "wifi": "",
+      "ports": "",
+      "status": "supported",
+      "summary": "",
+      "flash_notes": "",
+      "releases": []
     }
   ]
 }
