@@ -69,6 +69,20 @@
       "summary": "",
       "flash_notes": "",
       "releases": []
+    },
+    {
+      "id": "z8106ax",
+      "name": "Z8106AX",
+      "chipset": "",
+      "cpu": "",
+      "ram": "",
+      "flash": "",
+      "wifi": "",
+      "ports": "",
+      "status": "supported",
+      "summary": "",
+      "flash_notes": "",
+      "releases": []
     }
   ]
 }
