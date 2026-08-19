@@ -53,17 +53,32 @@
     return new Date().toISOString().slice(0, 10);
   }
 
+  function repoOwner() {
+    return settings().owner || "zbtlink";
+  }
+  function repoName() {
+    return settings().repo || "zbtlink.github.io";
+  }
+  function repoBranch() {
+    return settings().branch || "main";
+  }
+  function repoPath() {
+    return "/repos/" + repoOwner() + "/" + repoName();
+  }
+
   async function gh(path, opts) {
     var s = settings();
-    if (!s.githubToken || !s.owner || !s.repo) throw new Error("请先在设置中填写 GitHub 仓库和 Token");
     opts = opts || {};
+    var method = opts.method || "GET";
+    if (method !== "GET" && !s.githubToken) {
+      throw new Error("写入 GitHub 前请先在设置中填写 Token");
+    }
+    var headers = { Accept: "application/vnd.github+json" };
+    if (s.githubToken) headers.Authorization = "Bearer " + s.githubToken;
+    if (opts.body) headers["Content-Type"] = "application/json";
     var res = await fetch("https://api.github.com" + path, {
-      method: opts.method || "GET",
-      headers: {
-        Authorization: "Bearer " + s.githubToken,
-        Accept: "application/vnd.github+json",
-        "Content-Type": "application/json"
-      },
+      method: method,
+      headers: headers,
       body: opts.body ? JSON.stringify(opts.body) : undefined
     });
     if (!res.ok) {
@@ -76,8 +91,8 @@
 
   async function commitFiles(files, message) {
     var s = settings();
-    var branch = s.branch || "main";
-    var repo = "/repos/" + s.owner + "/" + s.repo;
+    var branch = repoBranch();
+    var repo = repoPath();
     var ref = await gh(repo + "/git/ref/heads/" + branch);
     var baseSha = ref.object.sha;
     var commit = await gh(repo + "/git/commits/" + baseSha);
@@ -123,19 +138,22 @@
   }
 
   async function loadCatalog() {
-    var s = settings();
-    var repo = "/repos/" + s.owner + "/" + s.repo;
-    var file = await gh(repo + "/contents/" + CATALOG_PATH + "?ref=" + (s.branch || "main"));
-    state.catalog = JSON.parse(base64ToUtf8(file.content));
+    try {
+      var file = await gh(repoPath() + "/contents/" + CATALOG_PATH + "?ref=" + repoBranch());
+      state.catalog = JSON.parse(base64ToUtf8(file.content));
+    } catch (err) {
+      var raw = "https://raw.githubusercontent.com/" + repoOwner() + "/" + repoName() + "/" + repoBranch() + "/" + CATALOG_PATH;
+      var res = await fetch(raw);
+      if (!res.ok) throw err;
+      state.catalog = await res.json();
+    }
     if (!state.catalog.devices) state.catalog.devices = [];
     return state.catalog;
   }
 
   async function loadPosts() {
-    var s = settings();
-    var repo = "/repos/" + s.owner + "/" + s.repo;
     try {
-      state.posts = await gh(repo + "/contents/_posts?ref=" + (s.branch || "main"));
+      state.posts = await gh(repoPath() + "/contents/_posts?ref=" + repoBranch());
       if (!Array.isArray(state.posts)) state.posts = [];
     } catch (e) {
       state.posts = [];
@@ -246,6 +264,9 @@
         '<div class="stat"><div class="muted">固件版本</div><strong>' + releases + "</strong></div>" +
         '<div class="stat"><div class="muted">文章</div><strong>' + (state.posts.length || 0) + "</strong></div>" +
       "</div>" +
+      (settings().githubToken && settings().ossKey ? "" :
+        '<div class="hint" style="margin-top:16px">当前是 <code>' + escapeHtml(location.origin) +
+        "</code>。GitHub Token / OSS 密钥按网站分开保存，从公网后台换到本地后需要在「设置」里重新填写一次，数据没有从服务器删除。</div>") +
       '<div class="card" style="margin-top:16px">' +
         "<p>发布流程：设置 GitHub Token 与 OSS → 创建机型 → 上传固件并填写说明 → 保存后自动提交到 GitHub，Pages 稍后更新。</p>" +
         '<div class="row"><a class="btn" href="../firmware/">打开前台固件页</a></div>' +
@@ -566,9 +587,14 @@
       fieldVal("cdnBase", "CDN 或自定义域名（可选，如 https://fw.zbtlink.com）", s.cdnBase || "") +
       '<div class="row"><button class="btn btn-primary" id="save-settings">保存到本机</button>' +
       '<button class="btn" id="reload-data">重新拉取仓库数据</button></div></div>' +
+      '<div class="card" style="margin-top:16px">' +
+      "<h3>从公网后台导入</h3>" +
+      "<p class='muted'>在 https://open.zbtlink.com/tools/export-settings.html 复制设置，粘贴到下方。</p>" +
+      '<label>设置 JSON<textarea id="f-import" placeholder="{ &quot;githubToken&quot;: &quot;...&quot;, &quot;ossKey&quot;: &quot;...&quot; }"></textarea></label>' +
+      '<div class="row"><button class="btn btn-primary" id="import-settings">导入并保存到本机</button></div></div>' +
       '<div class="hint" style="margin-top:16px">' +
       "<p><strong>GitHub Token：</strong> GitHub → Settings → Developer settings → Personal access tokens，勾选 repo。</p>" +
-      "<p><strong>OSS CORS：</strong> Bucket → 权限管理 → 跨域设置。来源填当前地址栏的 origin（例如 <code>https://open.zbtlink.com</code>，不要用 *），方法勾选 GET/PUT/POST/HEAD，允许 Headers 填 <code>*</code>，暴露 Headers 填 <code>ETag</code>。</p>" +
+      "<p><strong>OSS CORS：</strong> 本地后台请把来源设为 <code>http://127.0.0.1:4000</code> 和 <code>http://localhost:4000</code>（不要用 *），方法勾选 GET/PUT/POST/HEAD，允许 Headers 填 <code>*</code>，暴露 Headers 填 <code>ETag</code>。</p>" +
       "<p>建议使用仅有 firmware/ 前缀写权限的 RAM 子账号。不要把密钥提交进仓库。</p>" +
       "</div>";
     $("save-settings").onclick = function () {
@@ -584,6 +610,27 @@
         cdnBase: $("f-cdnBase").value.trim()
       });
       setStatus("设置已保存在本机浏览器", "ok");
+    };
+    $("import-settings").onclick = function () {
+      try {
+        var parsed = JSON.parse($("f-import").value.trim());
+        if (!parsed || typeof parsed !== "object") throw new Error("JSON 无效");
+        saveSettings({
+          owner: parsed.owner || "zbtlink",
+          repo: parsed.repo || "zbtlink.github.io",
+          branch: parsed.branch || "main",
+          githubToken: parsed.githubToken || "",
+          ossRegion: parsed.ossRegion || "oss-cn-hangzhou",
+          ossBucket: parsed.ossBucket || "",
+          ossKey: parsed.ossKey || "",
+          ossSecret: parsed.ossSecret || "",
+          cdnBase: parsed.cdnBase || ""
+        });
+        setStatus("已导入到 " + location.origin + "，正在刷新…", "ok");
+        refresh().then(function () { show("settings"); });
+      } catch (e) {
+        setStatus("导入失败：" + e.message, "err");
+      }
     };
     $("reload-data").onclick = function () { refresh().then(function () { setStatus("已同步仓库数据", "ok"); show("dash"); }); };
   }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Export admin settings</title>
+  <style>
+    body { font-family: "Segoe UI", "PingFang SC", sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; color: #182127; }
+    textarea { width: 100%; min-height: 220px; font-family: ui-monospace, Consolas, monospace; }
+    button { margin-top: 12px; padding: 8px 14px; }
+    .ok { color: #2f6f4e; }
+    .err { color: #a33; }
+  </style>
+</head>
+<body>
+  <h1>导出固件后台设置</h1>
+  <p>必须在 <strong>https://open.zbtlink.com</strong> 打开本页，才能读到公网后台保存在本浏览器里的 Token / OSS 密钥。</p>
+  <textarea id="out" readonly></textarea>
+  <div>
+    <button type="button" id="copy">复制</button>
+    <span id="msg"></span>
+  </div>
+  <p>然后打开 <a href="http://127.0.0.1:4000/admin/">http://127.0.0.1:4000/admin/</a> → 设置 → 粘贴导入。</p>
+  <script>
+    var key = "zbt-firmware-admin";
+    var raw = localStorage.getItem(key) || "";
+    var out = document.getElementById("out");
+    var msg = document.getElementById("msg");
+    if (!raw) {
+      out.value = "";
+      msg.className = "err";
+      msg.textContent = "没有找到设置。请用当初保存过公网后台的同一个浏览器打开本页。";
+    } else {
+      try {
+        out.value = JSON.stringify(JSON.parse(raw), null, 2);
+      } catch (e) {
+        out.value = raw;
+      }
+    }
+    document.getElementById("copy").onclick = function () {
+      if (!out.value) return;
+      navigator.clipboard.writeText(out.value).then(function () {
+        msg.className = "ok";
+        msg.textContent = "已复制";
+      }).catch(function () {
+        out.select();
+        document.execCommand("copy");
+        msg.className = "ok";
+        msg.textContent = "已复制";
+      });
+    };
+  </script>
+</body>
+</html>
