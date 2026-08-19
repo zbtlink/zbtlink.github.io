@@ -72,7 +72,23 @@
       "status": "supported",
       "summary": "",
       "flash_notes": "",
-      "releases": []
+      "releases": [
+        {
+          "version": "26.08.06",
+          "date": "2026-08-19",
+          "channel": "stable",
+          "notes": "",
+          "files": [
+            {
+              "type": "firmware",
+              "name": "Z8103AX_V26.08.06.bin",
+              "url": "https://for-zbtlink-opensource-firmware.oss-cn-shanghai.aliyuncs.com/firmware/z8103ax/26.08.06/Z8103AX_V26.08.06.bin",
+              "sha256": "54ff4f5a6b1572cc1bb6fe392c0003873ea132784537c210f8a5ebcfabbf6630",
+              "size": "25.24 MB"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "z8105ax",
