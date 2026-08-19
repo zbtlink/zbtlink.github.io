@@ -23,7 +23,8 @@ aside {
   padding: 20px 14px;
   background: #0d1114;
 }
-.logo { font-weight: 800; margin: 4px 8px 20px; }
+.logo { display: flex; align-items: center; gap: 8px; font-weight: 800; margin: 4px 8px 20px; }
+.logo img { height: 28px; width: auto; display: block; }
 aside nav { display: grid; gap: 6px; }
 aside button, .btn {
   background: transparent;

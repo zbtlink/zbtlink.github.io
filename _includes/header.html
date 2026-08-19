@@ -1,8 +1,7 @@
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="{{ home_path | relative_url }}">
-      <span class="brand-mark">ZBT</span>
-      <span class="brand-text">{{ t.brand }}</span>
+      <img class="brand-logo" src="{{ '/assets/images/zbt-logo.png' | relative_url }}" alt="zbt">
     </a>
     <nav class="nav-links">
       <a href="{{ home_path | relative_url }}" {% if page.url == home_path %}class="is-active"{% endif %}>{{ t.home }}</a>
