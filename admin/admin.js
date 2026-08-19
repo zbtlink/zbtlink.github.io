@@ -106,12 +106,17 @@
     return next.sha;
   }
 
-  function devicePage(device) {
+  function devicePage(device, lang) {
+    var permalink = lang === "zh"
+      ? "/zh/devices/" + device.id + "/"
+      : "/devices/" + device.id + "/";
     return [
       "---",
       "layout: device",
+      "lang: " + lang,
       "device_id: " + device.id,
       "title: " + device.name,
+      "permalink: " + permalink,
       "---",
       ""
     ].join("\n");
@@ -330,7 +335,8 @@
       setStatus("正在提交机型…");
       await commitFiles([
         { path: CATALOG_PATH, content: JSON.stringify({ devices: list }, null, 2) + "\n" },
-        { path: "_devices/" + device.id + ".md", content: devicePage(device) }
+        { path: "_devices/" + device.id + ".md", content: devicePage(device, "en") },
+        { path: "zh/devices/" + device.id + ".md", content: devicePage(device, "zh") }
       ], "更新机型 " + device.name);
       setStatus("机型已发布，等待 GitHub Pages 构建。", "ok");
       await refresh();
@@ -344,7 +350,8 @@
       state.catalog.devices = state.catalog.devices.filter(function (d) { return d.id !== id; });
       await commitFiles([
         { path: CATALOG_PATH, content: JSON.stringify(state.catalog, null, 2) + "\n" },
-        { path: "_devices/" + id + ".md", delete: true }
+        { path: "_devices/" + id + ".md", delete: true },
+        { path: "zh/devices/" + id + ".md", delete: true }
       ], "删除机型 " + id);
       setStatus("已删除机型", "ok");
       await refresh();
@@ -452,7 +459,7 @@
     html += '</div><div id="post-form"></div>';
     $("view-posts").innerHTML = html;
     $("new-post").onclick = function () {
-      state.editingPost = { title: "", date: today(), body: "", path: "" };
+      state.editingPost = { title: "", date: today(), body: "", path: "", lang: "en" };
       drawPostForm();
     };
     $("view-posts").querySelectorAll("[data-edit-post]").forEach(function (btn) {
@@ -470,21 +477,23 @@
     var title = (fm.match(/^title:\s*(.*)$/m) || [])[1] || "";
     title = title.replace(/^["']|["']$/g, "");
     var date = (fm.match(/^date:\s*(\d{4}-\d{2}-\d{2})/m) || [])[1] || today();
-    return { title: title, date: date, body: m[2].trim() };
+    var lang = (fm.match(/^lang:\s*(\w+)/m) || [])[1] || "en";
+    return { title: title, date: date, body: m[2].trim(), lang: lang };
   }
 
   function serializePost(post) {
-    return [
+    var lines = [
       "---",
       "layout: post",
       'title: "' + String(post.title).replace(/"/g, '\\"') + '"',
       "date: " + post.date + " 10:00:00 +0800",
-      "categories: news",
-      "---",
-      "",
-      post.body.trim(),
-      ""
-    ].join("\n");
+      "lang: " + (post.lang || "en"),
+      "categories: news"
+    ];
+    if (post.lang === "zh") {
+      lines.push("permalink: /zh/blog/" + slugify(post.title) + "/");
+    }
+    return lines.concat(["---", "", post.body.trim(), ""]).join("\n");
   }
 
   async function editPost(path) {
@@ -501,9 +510,11 @@
     $("post-form").innerHTML =
       '<div class="card" style="margin-top:16px">' +
       field("title", "标题", p.title) +
+      '<label>语言<select id="f-lang"><option value="en">English</option><option value="zh">中文</option></select></label>' +
       '<label>日期<input id="f-date" type="date" value="' + escapeHtml(p.date) + '"></label>' +
       '<label>正文（Markdown）<textarea id="f-body">' + escapeHtml(p.body) + "</textarea></label>" +
       '<div class="row"><button class="btn btn-primary" id="save-post">保存并发布</button></div></div>';
+    $("f-lang").value = p.lang || "en";
     $("save-post").onclick = savePost;
   }
 
@@ -512,11 +523,12 @@
       var title = $("f-title").value.trim();
       var date = $("f-date").value;
       var body = $("f-body").value;
+      var postLang = $("f-lang").value || "en";
       if (!title) throw new Error("请填写标题");
       var slug = slugify(title) || "update";
       var path = state.editingPost.path || ("_posts/" + date + "-" + slug + ".md");
       if (!state.editingPost.path) path = "_posts/" + date + "-" + slug + ".md";
-      var post = { title: title, date: date, body: body };
+      var post = { title: title, date: date, body: body, lang: postLang };
       setStatus("正在发布文章…");
       var files = [{ path: path, content: serializePost(post) }];
       if (state.editingPost.path && state.editingPost.path !== path) {

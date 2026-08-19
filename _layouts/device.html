@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+{% include i18n.html %}
 {% assign device = nil %}
 {% for item in site.data.catalog.devices %}
   {% if item.id == page.device_id %}
@@ -10,7 +11,7 @@ layout: default
 
 {% if device %}
 <article class="container device-page">
-  <p class="crumb"><a href="{{ '/firmware/' | relative_url }}">固件</a> / {{ device.name }}</p>
+  <p class="crumb"><a href="{{ firmware_path | relative_url }}">{{ t.crumb_firmware }}</a> / {{ device.name }}</p>
   <header class="device-hero">
     <div>
       <p class="eyebrow">{{ device.chipset }}</p>
@@ -21,18 +22,18 @@ layout: default
   </header>
 
   <ul class="spec-grid">
-    <li><span>CPU</span>{{ device.cpu }}</li>
-    <li><span>内存</span>{{ device.ram }}</li>
-    <li><span>闪存</span>{{ device.flash }}</li>
-    <li><span>无线</span>{{ device.wifi }}</li>
-    <li><span>网口</span>{{ device.ports }}</li>
+    {% if device.cpu != "" %}<li><span>{{ t.spec_cpu }}</span>{{ device.cpu }}</li>{% endif %}
+    {% if device.ram != "" %}<li><span>{{ t.spec_ram }}</span>{{ device.ram }}</li>{% endif %}
+    {% if device.flash != "" %}<li><span>{{ t.spec_flash }}</span>{{ device.flash }}</li>{% endif %}
+    {% if device.wifi != "" %}<li><span>{{ t.spec_wifi }}</span>{{ device.wifi }}</li>{% endif %}
+    {% if device.ports != "" %}<li><span>{{ t.spec_ports }}</span>{{ device.ports }}</li>{% endif %}
   </ul>
 
   <section>
-    <h2>发布说明与历史版本</h2>
+    <h2>{{ t.releases_title }}</h2>
     {% assign releases = device.releases | reverse %}
     {% if device.releases.size == 0 %}
-      <p class="empty">该机型尚未发布固件，请到后台上传后发布。</p>
+      <p class="empty">{{ t.no_firmware }}</p>
     {% else %}
       {% for rel in releases %}
       <section class="release-card" id="v{{ rel.version | slugify }}">
@@ -52,7 +53,7 @@ layout: default
             </div>
             <div class="file-meta">
               {% if file.size %}<span>{{ file.size }}</span>{% endif %}
-              <a class="btn btn-primary" href="{{ file.url }}">下载</a>
+              <a class="btn btn-primary" href="{{ file.url }}">{{ t.download }}</a>
             </div>
           </div>
           {% endfor %}
@@ -63,16 +64,16 @@ layout: default
     {% endif %}
   </section>
 
-  {% if device.flash_notes %}
+  {% if device.flash_notes != "" %}
   <section class="notes">
-    <h2>刷机说明</h2>
+    <h2>{{ t.flash_notes }}</h2>
     <div class="prose">{{ device.flash_notes | markdownify }}</div>
   </section>
   {% endif %}
 </article>
 {% else %}
 <div class="container">
-  <h1>未找到机型</h1>
-  <p>目录中没有 <code>{{ page.device_id }}</code>。</p>
+  <h1>{{ t.not_found_title }}</h1>
+  <p>{{ t.not_found_body }} <code>{{ page.device_id }}</code>.</p>
 </div>
 {% endif %}

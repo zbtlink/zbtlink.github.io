@@ -1,7 +1,10 @@
 ---
 permalink: /404.html
 layout: page
-title: 页面不存在
+title: Page not found
+lang: en
 ---
 
-地址无效或内容尚未发布。返回 [首页](/) 或 [固件列表](/firmware/)。
+{% include i18n.html %}
+
+{{ t.page_missing }} [{{ t.back_home }}]({{ '/' | relative_url }}) · [{{ t.back_firmware }}]({{ '/firmware/' | relative_url }}).

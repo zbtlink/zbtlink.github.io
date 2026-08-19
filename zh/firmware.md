@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Firmware
-lang: en
-permalink: /firmware/
+title: 固件
+lang: zh
+permalink: /zh/firmware/
 ---
 {% include i18n.html %}
 <section class="container">

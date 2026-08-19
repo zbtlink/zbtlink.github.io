@@ -1,8 +1,8 @@
 title: ZBT Link
-description: ZBT 开源固件发布平台
+description: Open firmware for ZBT network devices
 url: "https://open.zbtlink.com"
 baseurl: ""
-lang: zh-CN
+lang: en
 timezone: Asia/Shanghai
 github_username: zbtlink
 
@@ -19,18 +19,25 @@ collections:
 defaults:
   - scope:
       path: ""
+    values:
+      layout: default
+      lang: en
+  - scope:
+      path: "zh"
+    values:
+      lang: zh
+  - scope:
+      path: ""
       type: "devices"
     values:
       layout: device
+      lang: en
   - scope:
       path: ""
       type: "posts"
     values:
       layout: post
-  - scope:
-      path: ""
-    values:
-      layout: default
+      lang: en
 
 plugins:
   - jekyll-feed
@@ -44,3 +51,7 @@ exclude:
   - README.md
   - .sass-cache
   - .jekyll-cache
+  - admin
+  - _config.local.yml
+  - serve.ps1
+  - serve.bat

@@ -1,0 +1,11 @@
+# Local preview only: bundle exec jekyll serve --config _config.yml,_config.local.yml
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - node_modules
+  - README.md
+  - .sass-cache
+  - .jekyll-cache
+  - serve.ps1
+  - serve.bat

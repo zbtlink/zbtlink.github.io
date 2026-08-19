@@ -1,8 +1,9 @@
 ---
 layout: default
 ---
+{% include i18n.html %}
 <article class="container prose post-page">
-  <p class="crumb"><a href="{{ '/blog/' | relative_url }}">文章</a></p>
+  <p class="crumb"><a href="{{ blog_path | relative_url }}">{{ t.crumb_blog }}</a></p>
   <header>
     <time>{{ page.date | date: '%Y-%m-%d' }}</time>
     <h1>{{ page.title }}</h1>

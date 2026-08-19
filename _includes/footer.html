@@ -2,17 +2,17 @@
   <div class="container footer-grid">
     <div>
       <div class="brand-text">ZBT Link</div>
-      <p>开源固件发布平台。页面托管于 GitHub Pages，固件文件存储于对象存储。</p>
+      <p>{{ t.footer_blurb }}</p>
     </div>
     <div>
-      <h4>导航</h4>
-      <a href="{{ '/firmware/' | relative_url }}">机型与下载</a>
-      <a href="{{ '/blog/' | relative_url }}">更新文章</a>
+      <h4>{{ t.footer_nav }}</h4>
+      <a href="{{ firmware_path | relative_url }}">{{ t.footer_models }}</a>
+      <a href="{{ blog_path | relative_url }}">{{ t.footer_posts }}</a>
       <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
     </div>
     <div>
-      <h4>源码</h4>
-      <a href="https://github.com/zbtlink/zbtlink.github.io">GitHub 仓库</a>
+      <h4>{{ t.footer_source }}</h4>
+      <a href="https://github.com/zbtlink/zbtlink.github.io">GitHub</a>
       <a href="https://open.zbtlink.com">open.zbtlink.com</a>
     </div>
   </div>

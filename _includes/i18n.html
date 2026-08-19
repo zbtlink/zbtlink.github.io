@@ -1,0 +1,25 @@
+{% assign lang = page.lang | default: 'en' %}
+{% assign t = site.data.i18n[lang] %}
+{% if lang == 'zh' %}
+  {% assign home_path = '/zh/' %}
+  {% assign firmware_path = '/zh/firmware/' %}
+  {% assign blog_path = '/zh/blog/' %}
+  {% assign about_path = '/zh/about/' %}
+  {% assign device_prefix = '/zh/devices/' %}
+  {% if page.url == '/zh/' %}
+    {% assign switch_url = '/' %}
+  {% else %}
+    {% assign switch_url = page.url | replace_first: '/zh', '' %}
+  {% endif %}
+{% else %}
+  {% assign home_path = '/' %}
+  {% assign firmware_path = '/firmware/' %}
+  {% assign blog_path = '/blog/' %}
+  {% assign about_path = '/about/' %}
+  {% assign device_prefix = '/devices/' %}
+  {% if page.url == '/' %}
+    {% assign switch_url = '/zh/' %}
+  {% else %}
+    {% assign switch_url = '/zh' | append: page.url %}
+  {% endif %}
+{% endif %}

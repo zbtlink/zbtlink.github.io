@@ -1,4 +1,5 @@
 ---
 layout: home
-title: 开源固件
+title: Open Firmware
+lang: en
 ---

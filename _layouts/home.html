@@ -1,14 +1,15 @@
 ---
 layout: default
 ---
+{% include i18n.html %}
 <section class="hero">
   <div class="container hero-inner">
     <p class="eyebrow">ZBT Open Firmware</p>
-    <h1>为路由器提供可追溯的开源固件</h1>
-    <p class="lede">按机型查找固件，查看发布说明与历史版本。固件文件存放在 OSS，本站只发布页面与校验信息。</p>
+    <h1>{{ t.hero_title }}</h1>
+    <p class="lede">{{ t.hero_lede }}</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="{{ '/firmware/' | relative_url }}">浏览机型</a>
-      <a class="btn btn-ghost" href="{{ '/blog/' | relative_url }}">阅读更新</a>
+      <a class="btn btn-primary" href="{{ firmware_path | relative_url }}">{{ t.browse_models }}</a>
+      <a class="btn btn-ghost" href="{{ blog_path | relative_url }}">{{ t.read_updates }}</a>
     </div>
   </div>
 </section>
@@ -16,12 +17,12 @@ layout: default
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <h2>支持的机型</h2>
-      <a href="{{ '/firmware/' | relative_url }}">查看全部</a>
+      <h2>{{ t.supported_models }}</h2>
+      <a href="{{ firmware_path | relative_url }}">{{ t.view_all }}</a>
     </div>
     <div class="card-grid">
       {% for device in site.data.catalog.devices %}
-      <a class="device-card" href="{{ '/devices/' | append: device.id | append: '/' | relative_url }}">
+      <a class="device-card" href="{{ device_prefix | append: device.id | append: '/' | relative_url }}">
         <div class="card-kicker">
           <span class="status status-{{ device.status }}">{{ device.status }}</span>
           <span>{{ device.chipset }}</span>
@@ -29,9 +30,9 @@ layout: default
         <h3>{{ device.name }}</h3>
         <p>{{ device.summary }}</p>
         <ul class="spec-row">
-          <li>{{ device.cpu }}</li>
-          <li>{{ device.ram }} RAM</li>
-          <li>{{ device.wifi }}</li>
+          {% if device.cpu != "" %}<li>{{ device.cpu }}</li>{% endif %}
+          {% if device.ram != "" %}<li>{{ device.ram }} RAM</li>{% endif %}
+          {% if device.wifi != "" %}<li>{{ device.wifi }}</li>{% endif %}
         </ul>
       </a>
       {% endfor %}
@@ -42,11 +43,12 @@ layout: default
 <section class="section section-alt">
   <div class="container">
     <div class="section-head">
-      <h2>最新文章</h2>
-      <a href="{{ '/blog/' | relative_url }}">全部文章</a>
+      <h2>{{ t.latest_posts }}</h2>
+      <a href="{{ blog_path | relative_url }}">{{ t.all_posts }}</a>
     </div>
     <div class="post-list">
-      {% for post in site.posts limit: 4 %}
+      {% assign localized_posts = site.posts | where: "lang", lang %}
+      {% for post in localized_posts limit: 4 %}
       <article class="post-row">
         <time>{{ post.date | date: '%Y-%m-%d' }}</time>
         <div>

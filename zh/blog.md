@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Journal
-lang: en
-permalink: /blog/
+title: 文章
+lang: zh
+permalink: /zh/blog/
 ---
 {% include i18n.html %}
 <section class="container">

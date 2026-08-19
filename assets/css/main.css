@@ -59,9 +59,11 @@ code {
   letter-spacing: 0.04em;
 }
 .brand-text { font-weight: 700; }
-.nav-links { display: flex; gap: 18px; }
+.nav-links { display: flex; gap: 18px; align-items: center; }
 .nav-links a { color: #d7e0e4; }
 .nav-links a.is-active, .nav-links a:hover { color: #fff; }
+.lang-switch { display: inline-flex; gap: 8px; margin-left: 6px; padding-left: 12px; border-left: 1px solid #3b4c57; font-size: 0.86rem; }
+.lang-switch .is-active { color: #fff; font-weight: 700; }
 
 .hero {
   background:

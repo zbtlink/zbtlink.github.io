@@ -1,0 +1,82 @@
+en:
+  home: Home
+  firmware: Firmware
+  blog: Journal
+  about: About
+  brand: Open Firmware
+  hero_title: Traceable open firmware for ZBT routers
+  hero_lede: Find firmware by model, read release notes, and browse version history. Binaries stay on object storage; this site publishes pages and checksums.
+  browse_models: Browse models
+  read_updates: Read updates
+  supported_models: Supported models
+  view_all: View all
+  latest_posts: Latest posts
+  all_posts: All posts
+  firmware_title: Router models
+  firmware_lede: Choose a model to download firmware, read release notes, and review history. Files are hosted on OSS. Verify SHA256 before flashing.
+  search_placeholder: Search model or chipset
+  versions: versions
+  posts_title: Journal
+  posts_lede: Release notes, flashing guides, and product updates.
+  crumb_firmware: Firmware
+  crumb_blog: Journal
+  releases_title: Release notes and history
+  no_firmware: No firmware has been published for this model yet.
+  flash_notes: Flashing notes
+  download: Download
+  not_found_title: Model not found
+  not_found_body: No catalog entry for
+  spec_cpu: CPU
+  spec_ram: Memory
+  spec_flash: Flash
+  spec_wifi: Wi-Fi
+  spec_ports: Ports
+  footer_blurb: Open firmware pages on GitHub Pages. Firmware binaries are stored on object storage.
+  footer_nav: Navigate
+  footer_models: Models and downloads
+  footer_posts: Updates
+  footer_source: Source
+  page_missing: This page is missing or has not been published.
+  back_home: Home
+  back_firmware: Firmware list
+zh:
+  home: 首页
+  firmware: 固件
+  blog: 文章
+  about: 关于
+  brand: 开源固件
+  hero_title: 为路由器提供可追溯的开源固件
+  hero_lede: 按机型查找固件，查看发布说明与历史版本。固件文件存放在对象存储，本站只发布页面与校验信息。
+  browse_models: 浏览机型
+  read_updates: 阅读更新
+  supported_models: 支持的机型
+  view_all: 查看全部
+  latest_posts: 最新文章
+  all_posts: 全部文章
+  firmware_title: 路由器机型
+  firmware_lede: 选择机型查看固件、发布说明与历史版本。文件托管在 OSS，下载前请核对 SHA256。
+  search_placeholder: 搜索型号、芯片
+  versions: 个版本
+  posts_title: 文章
+  posts_lede: 版本说明、刷机教程与产品更新。
+  crumb_firmware: 固件
+  crumb_blog: 文章
+  releases_title: 发布说明与历史版本
+  no_firmware: 该机型尚未发布固件。
+  flash_notes: 刷机说明
+  download: 下载
+  not_found_title: 未找到机型
+  not_found_body: 目录中没有
+  spec_cpu: CPU
+  spec_ram: 内存
+  spec_flash: 闪存
+  spec_wifi: 无线
+  spec_ports: 网口
+  footer_blurb: 页面托管于 GitHub Pages，固件文件存储于对象存储。
+  footer_nav: 导航
+  footer_models: 机型与下载
+  footer_posts: 更新文章
+  footer_source: 源码
+  page_missing: 地址无效或内容尚未发布。
+  back_home: 首页
+  back_firmware: 固件列表
