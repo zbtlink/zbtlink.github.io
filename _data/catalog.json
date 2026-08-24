@@ -222,7 +222,23 @@
       "status": "supported",
       "summary": "",
       "flash_notes": "",
-      "releases": []
+      "releases": [
+        {
+          "version": "26.08.17",
+          "date": "2026-08-24",
+          "channel": "stable",
+          "notes": "",
+          "files": [
+            {
+              "type": "firmware",
+              "name": "wOS-z8118ax-26.0817_090821.bin",
+              "url": "https://for-zbtlink-opensource-firmware.oss-cn-shanghai.aliyuncs.com/firmware/z8118ax/26.08.17/wOS-z8118ax-26.0817_090821.bin",
+              "sha256": "52efa0cd7198c7d60f17926ba0a594dca8d88222d22b9214f6d1226c4a9d87aa",
+              "size": "33.70 MB"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
