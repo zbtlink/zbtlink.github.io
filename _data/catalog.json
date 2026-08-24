@@ -209,6 +209,20 @@
           ]
         }
       ]
+    },
+    {
+      "id": "z8118ax",
+      "name": "Z8118AX",
+      "chipset": "",
+      "cpu": "",
+      "ram": "",
+      "flash": "",
+      "wifi": "",
+      "ports": "",
+      "status": "supported",
+      "summary": "",
+      "flash_notes": "",
+      "releases": []
     }
   ]
 }
