@@ -87,6 +87,21 @@
               "size": "25.24 MB"
             }
           ]
+        },
+        {
+          "version": "7.6.7.2",
+          "date": "2026-09-02",
+          "channel": "stable",
+          "notes": "Z8103AX-NAND-MT7981-v7.6.7.2-26.0809(OpenWrt)",
+          "files": [
+            {
+              "type": "firmware",
+              "name": "Z8103AX-NAND-MT7981-v7.6.7.2-26.0809_115210.bin",
+              "url": "https://for-zbtlink-opensource-firmware.oss-cn-shanghai.aliyuncs.com/firmware/z8103ax/7.6.7.2/Z8103AX-NAND-MT7981-v7.6.7.2-26.0809_115210.bin",
+              "sha256": "05a36c29a23e42c5639dc58d1535ea6a723b8b5e5ac2b7666eb1a7580980712e",
+              "size": "25.96 MB"
+            }
+          ]
         }
       ]
     },
